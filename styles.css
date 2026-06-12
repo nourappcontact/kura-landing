@@ -1,0 +1,376 @@
+/* ============================================================
+   KURA landing — Game Boy DMG palette, pixel-art, retro.
+   Tokens mirror src/theme/colors.ts exactly.
+   ============================================================ */
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Archivo';
+  src: url('assets/fonts/Archivo-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+:root {
+  --bg: #0a0a0a;
+  --grid: #1a1a1a;
+  --accent: #9bbc0f;
+  --text: #e8e8e8;
+  --box: #c8a000;
+  --dim: #5a5a5a;
+  --mono: 'Press Start 2P', monospace;
+  --ui: 'Archivo', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ui);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Pixel art must stay crisp at any scale. */
+.px {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+}
+
+/* ===================== HERO ===================== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 20px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(155, 188, 15, 0.10), transparent 60%),
+    var(--bg);
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.25) 3px,
+    rgba(0, 0, 0, 0) 4px
+  );
+  opacity: 0.5;
+}
+
+.hero__inner { position: relative; z-index: 1; max-width: 640px; }
+
+.hero__mascot img {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 24px;
+  animation: bob 1.4s steps(2) infinite;
+}
+
+.logo {
+  font-family: var(--mono);
+  font-size: clamp(40px, 12vw, 88px);
+  color: var(--accent);
+  letter-spacing: 4px;
+  text-shadow: 4px 4px 0 #3a4a06, 8px 8px 0 rgba(0, 0, 0, 0.5);
+  margin-bottom: 24px;
+}
+
+.tagline {
+  font-size: clamp(16px, 4.5vw, 22px);
+  color: var(--text);
+  margin-bottom: 36px;
+  font-weight: 600;
+}
+
+.hero__cta { margin-bottom: 48px; }
+
+.hero__sprites {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+.hero__sprites img { width: 48px; height: 48px; }
+
+.float { animation: bob 1.6s steps(2) infinite; animation-delay: var(--d); }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ===================== BUTTONS ===================== */
+.btn {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  padding: 16px 24px;
+  line-height: 1.4;
+  transition: transform 0.06s ease;
+}
+.btn:active { transform: translateY(2px); }
+
+.btn--primary {
+  background: var(--accent);
+  color: #0a0a0a;
+  box-shadow: 4px 4px 0 #3a4a06;
+}
+.btn--primary:hover { background: #b4d41a; }
+.btn--primary:disabled {
+  background: var(--dim);
+  box-shadow: 4px 4px 0 #000;
+  cursor: not-allowed;
+  color: #1a1a1a;
+}
+
+/* ===================== SECTIONS ===================== */
+.section { padding: 72px 20px; max-width: 1040px; margin: 0 auto; }
+
+.section__title {
+  font-family: var(--mono);
+  font-size: clamp(16px, 5vw, 24px);
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 48px;
+  text-shadow: 3px 3px 0 #3a4a06;
+}
+
+/* ===================== PHONE MOCKUPS ===================== */
+.phones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: center;
+}
+
+.phone {
+  width: 240px;
+  background: #050505;
+  border: 3px solid var(--grid);
+  border-radius: 22px;
+  padding: 16px 14px;
+  box-shadow: 0 0 0 2px #000, 6px 6px 0 rgba(155, 188, 15, 0.12);
+}
+
+.phone__bar {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text);
+  padding: 4px 2px 12px;
+}
+
+.phone__stats {
+  display: flex;
+  gap: 24px;
+  font-family: var(--mono);
+  font-size: 7px;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.phone__stats b { color: var(--text); font-size: 11px; }
+
+/* Mini board, built from real game sprites */
+.board {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin: 8px 0;
+}
+.board .cell {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+.dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 18px;
+}
+.dpad .key {
+  background: var(--grid);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 6px;
+}
+
+/* Skins grid */
+.skins {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 8px 0;
+}
+.skins img { width: 100%; height: auto; }
+
+.skins__note {
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: 14px;
+  text-align: center;
+}
+
+/* Ranking list */
+.ranking { list-style: none; padding: 6px 0; }
+.ranking li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 6px;
+  border-bottom: 1px solid var(--grid);
+  font-size: 13px;
+}
+.ranking b {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--box);
+  width: 18px;
+}
+.ranking span { color: var(--text); font-weight: 600; }
+.ranking i { margin-left: auto; color: var(--dim); font-style: normal; font-size: 11px; }
+
+/* ===================== WHY CARDS ===================== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+.card {
+  background: var(--grid);
+  border: 2px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 28px 22px;
+  text-align: center;
+}
+.card__icon img {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 18px;
+}
+.card h3 {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.card p { color: var(--text); font-size: 15px; }
+
+/* ===================== HOOK / WAITLIST ===================== */
+.hook { padding-top: 40px; padding-bottom: 96px; }
+
+.hook__box {
+  max-width: 600px;
+  margin: 0 auto;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(155, 188, 15, 0.12), transparent 70%),
+    var(--grid);
+  border: 3px solid var(--box);
+  border-radius: 18px;
+  padding: 40px 28px;
+  text-align: center;
+  box-shadow: 6px 6px 0 rgba(200, 160, 0, 0.25);
+}
+
+.hook__counter { margin-bottom: 28px; }
+.hook__num {
+  display: block;
+  font-family: var(--mono);
+  font-size: clamp(40px, 14vw, 72px);
+  color: var(--box);
+  line-height: 1;
+  text-shadow: 3px 3px 0 #5a4a00;
+}
+.hook__label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--dim);
+  margin-top: 12px;
+  letter-spacing: 1px;
+}
+.hook__counter.sold .hook__num { color: var(--dim); text-shadow: 3px 3px 0 #000; }
+
+.hook__title {
+  font-family: var(--mono);
+  font-size: clamp(13px, 3.8vw, 18px);
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+.hook__sub { color: var(--dim); font-size: 15px; margin-bottom: 28px; }
+
+.waitlist {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+.waitlist__input {
+  font-family: var(--ui);
+  font-size: 16px;
+  padding: 16px;
+  background: #050505;
+  border: 2px solid var(--dim);
+  border-radius: 8px;
+  color: var(--text);
+  text-align: center;
+}
+.waitlist__input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.waitlist__input.invalid { border-color: #d44; }
+
+.waitlist__msg {
+  min-height: 20px;
+  font-size: 14px;
+  color: var(--accent);
+}
+.waitlist__msg.error { color: #ff6b6b; }
+
+/* ===================== FOOTER ===================== */
+.footer {
+  text-align: center;
+  padding: 48px 20px;
+  border-top: 1px solid var(--grid);
+  color: var(--dim);
+  font-size: 13px;
+}
+.footer img { width: 40px; height: 40px; margin: 0 auto 18px; }
+.footer__fine {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--accent);
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float, .hero__mascot img { animation: none; }
+  html { scroll-behavior: auto; }
+}
