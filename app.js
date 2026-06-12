@@ -119,16 +119,95 @@ const I18N = {
     msgListed: 'Done! You’re on the list, we’ll alert you at launch.',
     msgError: 'Something went wrong. Please try again.',
   },
+  fr: {
+    title: 'KURA — 500 niveaux. Zéro pub.',
+    tagline: '500 niveaux. Zéro pub.<br />Payez une fois ou jamais.',
+    heroCta: 'Rejoindre la liste &#9660;',
+    gameTitle: 'Le jeu',
+    skinsNote: 'Débloquez tous les skins avec l’achat unique.',
+    rankingNote: 'Deux classements par niveau : temps et coups.',
+    movUnit: 'cps',
+    whyTitle: 'Pourquoi KURA est différent',
+    card1Title: 'Zéro pub',
+    card1Body: 'Jamais. Ni bannières, ni vidéos, ni interruptions. Rien que vous et le jeu.',
+    card2Title: 'Sans abonnement',
+    card2Body: 'Payez une fois et jouez pour toujours. Aucun frais mensuel caché.',
+    card3Title: 'De la vraie logique',
+    card3Body: '500 niveaux du classique jeu de pousser des caisses, avec une vraie difficulté. Sans précipitation, sans hasard : juste votre tête.',
+    counterLoading: 'chargement des places…',
+    emailPlaceholder: 'vous@email.com',
+    footerMeta: 'KURA · puzzle rétro · Android d’abord · ',
+    footerFine: 'Poussez des caisses. Sans pub. Pour toujours.',
+
+    counterOpenLabel: (cap) => `sur ${cap} places cadeau gratuites`,
+    hookTitleOpen: 'Les 100 premiers débloquent KURA<br />en entier, gratuit, pour toujours.',
+    hookSubOpen: 'Laissez-nous votre email. Sans spam, juste l’annonce du lancement et votre cadeau.',
+    submitOpen: 'Je veux mon cadeau',
+    soldLabel: 'Places cadeau épuisées',
+    hookTitleSold: 'Places cadeau épuisées.<br />Mais vous pouvez encore rejoindre la liste.',
+    hookSubSold: 'Inscrivez-vous et on vous prévient au lancement.',
+    submitSold: 'Rejoindre la liste',
+
+    msgPreview: 'La liste ouvre très bientôt — revenez dans quelques jours.',
+    msgInvalid: 'Saisissez un email valide, s’il vous plaît.',
+    msgLoadFail: 'Impossible de charger le formulaire. Rechargez la page.',
+    msgConnFail: 'Connexion impossible. Rechargez la page.',
+    msgSubmitting: 'Inscription en cours…',
+    msgGift: (n) => `C’est fait ! Vous êtes le n°${n} sur 100 — cadeau assuré. 🎁`,
+    msgListed: 'C’est fait ! Vous êtes sur la liste, on vous prévient au lancement.',
+    msgError: 'Un problème est survenu. Réessayez.',
+  },
+  pt: {
+    title: 'KURA — 500 níveis. Zero anúncios.',
+    tagline: '500 níveis. Zero anúncios.<br />Pague uma vez ou nunca pague.',
+    heroCta: 'Entrar na lista &#9660;',
+    gameTitle: 'O jogo',
+    skinsNote: 'Desbloqueie todas as skins com a compra única.',
+    rankingNote: 'Dois rankings por nível: tempo e movimentos.',
+    movUnit: 'mov',
+    whyTitle: 'Por que o KURA é diferente',
+    card1Title: 'Zero anúncios',
+    card1Body: 'Nunca. Nem banners, nem vídeos, nem interrupções. Só você e o jogo.',
+    card2Title: 'Sem assinatura',
+    card2Body: 'Pague uma vez e jogue para sempre. Sem mensalidades escondidas.',
+    card3Title: 'Lógica de verdade',
+    card3Body: '500 níveis do clássico jogo de empurrar caixas, com dificuldade de verdade. Sem pressa, sem sorte: só a sua cabeça.',
+    counterLoading: 'carregando vagas…',
+    emailPlaceholder: 'voce@email.com',
+    footerMeta: 'KURA · puzzle retrô · Android primeiro · ',
+    footerFine: 'Empurre caixas. Sem anúncios. Para sempre.',
+
+    counterOpenLabel: (cap) => `de ${cap} vagas de presente grátis`,
+    hookTitleOpen: 'Os primeiros 100 desbloqueiam o KURA<br />completo de graça, para sempre.',
+    hookSubOpen: 'Deixe o seu email. Sem spam, só o aviso de lançamento e o seu presente.',
+    submitOpen: 'Quero o meu presente',
+    soldLabel: 'Vagas de presente esgotadas',
+    hookTitleSold: 'Vagas de presente esgotadas.<br />Mas você ainda pode entrar na lista.',
+    hookSubSold: 'Inscreva-se e a gente avisa no lançamento.',
+    submitSold: 'Entrar na lista',
+
+    msgPreview: 'A lista abre muito em breve — volte daqui a uns dias.',
+    msgInvalid: 'Digite um email válido, por favor.',
+    msgLoadFail: 'Não foi possível carregar o formulário. Recarregue a página.',
+    msgConnFail: 'Não foi possível conectar. Recarregue a página.',
+    msgSubmitting: 'Inscrevendo você…',
+    msgGift: (n) => `Pronto! Você é o nº${n} de 100 — presente garantido. 🎁`,
+    msgListed: 'Pronto! Você está na lista, a gente avisa no lançamento.',
+    msgError: 'Algo deu errado. Tente de novo.',
+  },
 };
 
 const LANG_KEY = 'kura-lang';
 
+const SUPPORTED = ['es', 'en', 'fr', 'pt'];
+
 function detectLang() {
   let saved = null;
   try { saved = localStorage.getItem(LANG_KEY); } catch (_) {}
-  if (saved === 'es' || saved === 'en') return saved;
+  if (SUPPORTED.includes(saved)) return saved;
   const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-  return nav.startsWith('es') ? 'es' : 'en';
+  const code = nav.slice(0, 2);
+  return SUPPORTED.includes(code) ? code : 'en';
 }
 
 let lang = detectLang();
@@ -236,7 +315,7 @@ function showMsg(text, isError) {
 const langButtons = Array.from(document.querySelectorAll('.lang-switch [data-lang]'));
 
 function applyLang(next) {
-  lang = next === 'es' ? 'es' : 'en';
+  lang = SUPPORTED.includes(next) ? next : 'en';
   try { localStorage.setItem(LANG_KEY, lang); } catch (_) {}
 
   document.documentElement.lang = lang;
