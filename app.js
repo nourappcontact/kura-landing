@@ -29,8 +29,7 @@ const firebaseConfig = {
   projectId: "kura-app-5c1ba",
   storageBucket: "kura-app-5c1ba.firebasestorage.app",
   messagingSenderId: "747963930994",
-  appId: "1:747963930994:web:e46e3d79ae02e221d0a5eb",
-  measurementId: "G-YBLMYT4224"
+  appId: "1:747963930994:web:e46e3d79ae02e221d0a5eb"
 };
 
 const GIFT_CAP = 100;
@@ -62,6 +61,8 @@ const I18N = {
     emailPlaceholder: 'tu@email.com',
     footerMeta: 'KURA · puzzle retro · Android primero · ',
     footerFine: 'Empuja cajas. Sin anuncios. Para siempre.',
+    privacyLink: 'Política de privacidad',
+    termsLink: 'Términos de uso',
 
     counterOpenLabel: (cap) => `de ${cap} plazas de regalo libres`,
     hookTitleOpen: 'Los primeros 100 desbloquean KURA<br />completo gratis, para siempre.',
@@ -100,6 +101,8 @@ const I18N = {
     emailPlaceholder: 'you@email.com',
     footerMeta: 'KURA · retro puzzle · Android first · ',
     footerFine: 'Push boxes. No ads. Forever.',
+    privacyLink: 'Privacy policy',
+    termsLink: 'Terms of use',
 
     counterOpenLabel: (cap) => `of ${cap} free gift spots left`,
     hookTitleOpen: 'First 100 unlock the full<br />game free, forever.',
@@ -138,6 +141,8 @@ const I18N = {
     emailPlaceholder: 'vous@email.com',
     footerMeta: 'KURA · puzzle rétro · Android d’abord · ',
     footerFine: 'Poussez des caisses. Sans pub. Pour toujours.',
+    privacyLink: 'Politique de confidentialité',
+    termsLink: 'Conditions d’utilisation',
 
     counterOpenLabel: (cap) => `sur ${cap} places cadeau gratuites`,
     hookTitleOpen: 'Les 100 premiers débloquent KURA<br />en entier, gratuit, pour toujours.',
@@ -176,6 +181,8 @@ const I18N = {
     emailPlaceholder: 'voce@email.com',
     footerMeta: 'KURA · puzzle retrô · Android primeiro · ',
     footerFine: 'Empurre caixas. Sem anúncios. Para sempre.',
+    privacyLink: 'Política de privacidade',
+    termsLink: 'Termos de uso',
 
     counterOpenLabel: (cap) => `de ${cap} vagas de presente grátis`,
     hookTitleOpen: 'Os primeiros 100 desbloqueiam o KURA<br />completo de graça, para sempre.',
