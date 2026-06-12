@@ -36,6 +36,109 @@ const firebaseConfig = {
 const GIFT_CAP = 100;
 const configReady = !firebaseConfig.apiKey.startsWith('PEGA_AQUI');
 
+/* ===================== i18n =====================
+   All landing copy lives here (ES / EN). The page is never duplicated:
+   data-i18n / data-i18n-ph attributes mark static nodes, and the dynamic
+   counter / form strings are pulled from here too. Plain strings are set
+   verbatim; functions receive runtime values (count, remaining cap…).
+   ------------------------------------------------------------ */
+const I18N = {
+  es: {
+    title: 'KURA — 500 niveles. Cero anuncios.',
+    tagline: '500 niveles. Cero anuncios.<br />Paga una vez o no pagues nunca.',
+    heroCta: 'Entrar en la lista &#9660;',
+    gameTitle: 'El juego',
+    skinsNote: 'Desbloquea todas las skins con la compra única.',
+    rankingNote: 'Dos rankings por nivel: tiempo y movimientos.',
+    movUnit: 'mov',
+    whyTitle: 'Por qué KURA es distinto',
+    card1Title: 'Cero anuncios',
+    card1Body: 'Nunca. Ni banners, ni vídeos, ni interrupciones. El juego y tú, nada más.',
+    card2Title: 'Sin suscripción',
+    card2Body: 'Paga una vez y juega para siempre. Sin cuotas mensuales escondidas.',
+    card3Title: 'Lógica de verdad',
+    card3Body: '500 niveles de Sokoban con dificultad real. Sin prisas, sin azar: solo tu cabeza.',
+    counterLoading: 'cargando plazas…',
+    emailPlaceholder: 'tu@email.com',
+    footerMeta: 'KURA · puzzle retro · Android primero · ',
+    footerFine: 'Empuja cajas. Sin anuncios. Para siempre.',
+
+    counterOpenLabel: (cap) => `de ${cap} plazas de regalo libres`,
+    hookTitleOpen: 'Los primeros 100 desbloquean KURA<br />completo gratis, para siempre.',
+    hookSubOpen: 'Déjanos tu email. Sin spam, solo el aviso de lanzamiento y tu regalo.',
+    submitOpen: 'Quiero mi regalo',
+    soldLabel: 'Plazas de regalo agotadas',
+    hookTitleSold: 'Plazas de regalo agotadas.<br />Pero aún puedes entrar en la lista.',
+    hookSubSold: 'Apúntate y te avisamos en el lanzamiento.',
+    submitSold: 'Apuntarme a la lista',
+
+    msgPreview: 'Lista abriéndose muy pronto — vuelve en unos días.',
+    msgInvalid: 'Escribe un email válido, por favor.',
+    msgLoadFail: 'No se pudo cargar el formulario. Recarga la página.',
+    msgConnFail: 'No se pudo conectar. Recarga la página.',
+    msgSubmitting: 'Apuntándote…',
+    msgGift: (n) => `¡Hecho! Eres el #${n} de 100 — regalo asegurado. 🎁`,
+    msgListed: '¡Hecho! Estás en la lista, te avisamos en el lanzamiento.',
+    msgError: 'Algo falló al apuntarte. Inténtalo de nuevo.',
+  },
+  en: {
+    title: 'KURA — 500 levels. Zero ads.',
+    tagline: '500 levels. Zero ads.<br />Pay once or never pay.',
+    heroCta: 'Join the list &#9660;',
+    gameTitle: 'The game',
+    skinsNote: 'Unlock every skin with the one-time purchase.',
+    rankingNote: 'Two rankings per level: time and moves.',
+    movUnit: 'mv',
+    whyTitle: 'Why KURA is different',
+    card1Title: 'Zero ads',
+    card1Body: 'Never. No banners, no videos, no interruptions. Just you and the game.',
+    card2Title: 'No subscription',
+    card2Body: 'Pay once and play forever. No hidden monthly fees.',
+    card3Title: 'Real logic',
+    card3Body: '500 Sokoban levels with real difficulty. No rush, no luck: just your brain.',
+    counterLoading: 'loading spots…',
+    emailPlaceholder: 'you@email.com',
+    footerMeta: 'KURA · retro puzzle · Android first · ',
+    footerFine: 'Push boxes. No ads. Forever.',
+
+    counterOpenLabel: (cap) => `of ${cap} free gift spots left`,
+    hookTitleOpen: 'First 100 unlock the full<br />game free, forever.',
+    hookSubOpen: 'Drop your email. No spam — just the launch alert and your gift.',
+    submitOpen: 'I want my gift',
+    soldLabel: 'Gift spots full',
+    hookTitleSold: 'Gift spots full.<br />But you can still join the list.',
+    hookSubSold: 'Sign up and we’ll alert you at launch.',
+    submitSold: 'Join the list',
+
+    msgPreview: 'List opening very soon — check back in a few days.',
+    msgInvalid: 'Please enter a valid email.',
+    msgLoadFail: 'Couldn’t load the form. Reload the page.',
+    msgConnFail: 'Couldn’t connect. Reload the page.',
+    msgSubmitting: 'Signing you up…',
+    msgGift: (n) => `Done! You’re #${n} of 100 — gift secured. 🎁`,
+    msgListed: 'Done! You’re on the list, we’ll alert you at launch.',
+    msgError: 'Something went wrong. Please try again.',
+  },
+};
+
+const LANG_KEY = 'kura-lang';
+
+function detectLang() {
+  let saved = null;
+  try { saved = localStorage.getItem(LANG_KEY); } catch (_) {}
+  if (saved === 'es' || saved === 'en') return saved;
+  const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+  return nav.startsWith('es') ? 'es' : 'en';
+}
+
+let lang = detectLang();
+
+function t(key, ...args) {
+  const dict = I18N[lang] || I18N.en;
+  const v = key in dict ? dict[key] : I18N.en[key];
+  return typeof v === 'function' ? v(...args) : v;
+}
+
 /* ===================== Mini board (sprite mockup) ===================== */
 (function renderBoard() {
   const el = document.getElementById('board');
@@ -93,25 +196,27 @@ const hookTitle = document.getElementById('hookTitle');
 const hookSub = document.getElementById('hookSub');
 const submitBtn = document.getElementById('submitBtn');
 
+// Last count seen from Firestore, so a language switch can repaint in place.
+let lastCount = null;
+
 function paintCounter(count) {
+  lastCount = count;
   const remaining = Math.max(0, GIFT_CAP - count);
   if (remaining > 0) {
     counterEl.classList.remove('sold');
     counterNum.textContent = remaining;
-    counterLabel.textContent = `de ${GIFT_CAP} plazas de regalo libres`;
-    hookTitle.innerHTML =
-      'Los primeros 100 desbloquean KURA<br />completo gratis, para siempre.';
-    hookSub.textContent =
-      'Déjanos tu email. Sin spam, solo el aviso de lanzamiento y tu regalo.';
-    submitBtn.textContent = 'Quiero mi regalo';
+    counterLabel.textContent = t('counterOpenLabel', GIFT_CAP);
+    hookTitle.innerHTML = t('hookTitleOpen');
+    hookSub.textContent = t('hookSubOpen');
+    submitBtn.textContent = t('submitOpen');
   } else {
     // Cap reached — form stays open as a normal waitlist.
     counterEl.classList.add('sold');
     counterNum.textContent = '0';
-    counterLabel.textContent = 'Plazas de regalo agotadas';
-    hookTitle.innerHTML = 'Plazas de regalo agotadas.<br />Pero aún puedes entrar en la lista.';
-    hookSub.textContent = 'Apúntate y te avisamos en el lanzamiento.';
-    submitBtn.textContent = 'Apuntarme a la lista';
+    counterLabel.textContent = t('soldLabel');
+    hookTitle.innerHTML = t('hookTitleSold');
+    hookSub.textContent = t('hookSubSold');
+    submitBtn.textContent = t('submitSold');
   }
 }
 
@@ -127,15 +232,43 @@ function showMsg(text, isError) {
   formMsg.classList.toggle('error', !!isError);
 }
 
+/* ===================== Language switch ===================== */
+const langButtons = Array.from(document.querySelectorAll('.lang-switch [data-lang]'));
+
+function applyLang(next) {
+  lang = next === 'es' ? 'es' : 'en';
+  try { localStorage.setItem(LANG_KEY, lang); } catch (_) {}
+
+  document.documentElement.lang = lang;
+  document.title = t('title');
+
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    el.innerHTML = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach((el) => {
+    el.placeholder = t(el.dataset.i18nPh);
+  });
+
+  langButtons.forEach((b) => b.classList.toggle('active', b.dataset.lang === lang));
+
+  // Repaint the live counter/form copy if we already have a count.
+  if (lastCount !== null) paintCounter(lastCount);
+}
+
+langButtons.forEach((b) =>
+  b.addEventListener('click', () => applyLang(b.dataset.lang)),
+);
+
+applyLang(lang);
+
 if (!configReady) {
   // Lets the page be previewed before Firebase is wired up.
-  counterNum.textContent = '100';
-  counterLabel.textContent = `de ${GIFT_CAP} plazas de regalo libres`;
-  showMsg('Lista abriéndose muy pronto — vuelve en unos días.', false);
+  paintCounter(0);
+  showMsg(t('msgPreview'), false);
 } else {
   initFirebase().catch((e) => {
     console.error('Firebase load error', e);
-    showMsg('No se pudo cargar el formulario. Recarga la página.', true);
+    showMsg(t('msgLoadFail'), true);
   });
 }
 
@@ -164,7 +297,7 @@ async function initFirebase() {
   // Anonymous auth: needed to write, keeps the form gated against open spam.
   const authReady = signInAnonymously(auth).catch((e) => {
     console.error('Auth error', e);
-    showMsg('No se pudo conectar. Recarga la página.', true);
+    showMsg(t('msgConnFail'), true);
   });
 
   // Live counter from the public aggregate doc (no emails are read).
@@ -186,14 +319,14 @@ async function initFirebase() {
     const email = emailInput.value.trim().toLowerCase();
     if (!EMAIL_RE.test(email)) {
       emailInput.classList.add('invalid');
-      showMsg('Escribe un email válido, por favor.', true);
+      showMsg(t('msgInvalid'), true);
       return;
     }
     emailInput.classList.remove('invalid');
 
     submitting = true;
     submitBtn.disabled = true;
-    showMsg('Apuntándote…', false);
+    showMsg(t('msgSubmitting'), false);
 
     try {
       await authReady;
@@ -212,13 +345,13 @@ async function initFirebase() {
 
       form.reset();
       if (newCount <= GIFT_CAP) {
-        showMsg(`¡Hecho! Eres el #${newCount} de 100 — regalo asegurado. 🎁`, false);
+        showMsg(t('msgGift', newCount), false);
       } else {
-        showMsg('¡Hecho! Estás en la lista, te avisamos en el lanzamiento.', false);
+        showMsg(t('msgListed'), false);
       }
     } catch (err) {
       console.error('Signup error', err);
-      showMsg('Algo falló al apuntarte. Inténtalo de nuevo.', true);
+      showMsg(t('msgError'), true);
     } finally {
       submitting = false;
       submitBtn.disabled = false;

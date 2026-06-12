@@ -17,6 +17,12 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- ===================== LANGUAGE SWITCH ===================== -->
+  <div class="lang-switch" role="group" aria-label="Idioma / Language">
+    <button type="button" data-lang="es">ES</button>
+    <button type="button" data-lang="en">EN</button>
+  </div>
+
   <!-- ===================== HERO ===================== -->
   <header class="hero">
     <div class="scanlines" aria-hidden="true"></div>
@@ -27,9 +33,9 @@
       </div>
 
       <h1 class="logo">KURA</h1>
-      <p class="tagline">500 niveles. Cero anuncios.<br />Paga una vez o no pagues nunca.</p>
+      <p class="tagline" data-i18n="tagline">500 niveles. Cero anuncios.<br />Paga una vez o no pagues nunca.</p>
 
-      <a href="#gancho" class="btn btn--primary hero__cta">Entrar en la lista &#9660;</a>
+      <a href="#gancho" class="btn btn--primary hero__cta" data-i18n="heroCta">Entrar en la lista &#9660;</a>
 
       <div class="hero__sprites" aria-hidden="true">
         <img src="assets/sprites/caja.png" class="px float" style="--d:0s" alt="" />
@@ -43,7 +49,7 @@
   <main>
     <!-- ===================== MOCKUPS ===================== -->
     <section class="section gallery" aria-label="El juego">
-      <h2 class="section__title">El juego</h2>
+      <h2 class="section__title" data-i18n="gameTitle">El juego</h2>
 
       <div class="phones">
         <!-- Phone 1: a real little puzzle, built from the game sprites -->
@@ -75,42 +81,42 @@
             <img src="assets/sprites/skin-astronauta.png" class="px" alt="Astronauta" />
             <img src="assets/sprites/caja-colocada.png" class="px" alt="" />
           </div>
-          <p class="skins__note">Desbloquea todas las skins con la compra única.</p>
+          <p class="skins__note" data-i18n="skinsNote">Desbloquea todas las skins con la compra única.</p>
         </div>
 
         <!-- Phone 3: ranking -->
         <div class="phone">
           <div class="phone__bar"><span>RANKING</span></div>
           <ul class="ranking">
-            <li><b>1</b><span>0:41</span><i>18 mov</i></li>
-            <li><b>2</b><span>0:47</span><i>18 mov</i></li>
-            <li><b>3</b><span>0:52</span><i>20 mov</i></li>
-            <li><b>4</b><span>1:03</span><i>19 mov</i></li>
-            <li><b>5</b><span>1:11</span><i>22 mov</i></li>
+            <li><b>1</b><span>0:41</span><i>18 <span data-i18n="movUnit">mov</span></i></li>
+            <li><b>2</b><span>0:47</span><i>18 <span data-i18n="movUnit">mov</span></i></li>
+            <li><b>3</b><span>0:52</span><i>20 <span data-i18n="movUnit">mov</span></i></li>
+            <li><b>4</b><span>1:03</span><i>19 <span data-i18n="movUnit">mov</span></i></li>
+            <li><b>5</b><span>1:11</span><i>22 <span data-i18n="movUnit">mov</span></i></li>
           </ul>
-          <p class="skins__note">Dos rankings por nivel: tiempo y movimientos.</p>
+          <p class="skins__note" data-i18n="rankingNote">Dos rankings por nivel: tiempo y movimientos.</p>
         </div>
       </div>
     </section>
 
     <!-- ===================== QUÉ ES ===================== -->
     <section class="section why">
-      <h2 class="section__title">Por qué KURA es distinto</h2>
+      <h2 class="section__title" data-i18n="whyTitle">Por qué KURA es distinto</h2>
       <div class="cards">
         <div class="card">
           <div class="card__icon"><img src="assets/sprites/objetivo.png" class="px" alt="" /></div>
-          <h3>Cero anuncios</h3>
-          <p>Nunca. Ni banners, ni vídeos, ni interrupciones. El juego y tú, nada más.</p>
+          <h3 data-i18n="card1Title">Cero anuncios</h3>
+          <p data-i18n="card1Body">Nunca. Ni banners, ni vídeos, ni interrupciones. El juego y tú, nada más.</p>
         </div>
         <div class="card">
           <div class="card__icon"><img src="assets/sprites/caja.png" class="px" alt="" /></div>
-          <h3>Sin suscripción</h3>
-          <p>Paga una vez y juega para siempre. Sin cuotas mensuales escondidas.</p>
+          <h3 data-i18n="card2Title">Sin suscripción</h3>
+          <p data-i18n="card2Body">Paga una vez y juega para siempre. Sin cuotas mensuales escondidas.</p>
         </div>
         <div class="card">
           <div class="card__icon"><img src="assets/sprites/caja-colocada.png" class="px" alt="" /></div>
-          <h3>Lógica de verdad</h3>
-          <p>500 niveles de Sokoban con dificultad real. Sin prisas, sin azar: solo tu cabeza.</p>
+          <h3 data-i18n="card3Title">Lógica de verdad</h3>
+          <p data-i18n="card3Body">500 niveles de Sokoban con dificultad real. Sin prisas, sin azar: solo tu cabeza.</p>
         </div>
       </div>
     </section>
@@ -120,7 +126,7 @@
       <div class="hook__box">
         <div class="hook__counter" id="counter" aria-live="polite">
           <span class="hook__num" id="counterNum">···</span>
-          <span class="hook__label" id="counterLabel">cargando plazas…</span>
+          <span class="hook__label" id="counterLabel" data-i18n="counterLoading">cargando plazas…</span>
         </div>
 
         <h2 class="hook__title" id="hookTitle">Los primeros 100 desbloquean KURA<br />completo gratis, para siempre.</h2>
@@ -133,6 +139,7 @@
             name="email"
             class="waitlist__input"
             placeholder="tu@email.com"
+            data-i18n-ph="emailPlaceholder"
             autocomplete="email"
             required
           />
@@ -145,8 +152,8 @@
 
   <footer class="footer">
     <img src="assets/sprites/player-clasico-derecha.png" class="px" alt="" />
-    <p>KURA · puzzle retro · Android primero · <span id="year"></span></p>
-    <p class="footer__fine">Empuja cajas. Sin anuncios. Para siempre.</p>
+    <p><span data-i18n="footerMeta">KURA · puzzle retro · Android primero · </span><span id="year"></span></p>
+    <p class="footer__fine" data-i18n="footerFine">Empuja cajas. Sin anuncios. Para siempre.</p>
   </footer>
 
   <script type="module" src="app.js"></script>

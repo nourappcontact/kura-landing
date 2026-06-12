@@ -140,6 +140,34 @@ body {
   color: #1a1a1a;
 }
 
+/* ===================== LANGUAGE SWITCH ===================== */
+.lang-switch {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 30;
+  display: flex;
+  gap: 4px;
+}
+.lang-switch button {
+  font-family: var(--mono);
+  font-size: 8px;
+  line-height: 1;
+  padding: 7px 8px;
+  color: var(--dim);
+  background: #050505;
+  border: 2px solid var(--grid);
+  cursor: pointer;
+  transition: color 0.1s ease, background 0.1s ease;
+}
+.lang-switch button:hover { color: var(--text); }
+.lang-switch button.active {
+  color: #0a0a0a;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.lang-switch button.active:hover { color: #0a0a0a; }
+
 /* ===================== SECTIONS ===================== */
 .section { padding: 72px 20px; max-width: 1040px; margin: 0 auto; }
 
