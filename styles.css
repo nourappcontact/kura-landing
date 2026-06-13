@@ -390,6 +390,16 @@ body {
   font-size: 13px;
 }
 .footer img { width: 40px; height: 40px; margin: 0 auto 18px; }
+.footer__legal {
+  margin-top: 12px;
+  font-size: 13px;
+}
+.footer__legal a {
+  color: var(--dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--grid);
+}
+.footer__legal a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .footer__fine {
   font-family: var(--mono);
   font-size: 8px;
